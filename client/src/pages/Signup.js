@@ -6,10 +6,18 @@ import { ADD_USER } from "../utils/mutations";
 
 function Signup(props) {
   const [formState, setFormState] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+
   const [addUser] = useMutation(ADD_USER);
 
   const handleFormSubmit = async event => {
     event.preventDefault();
+  // added to make sure passoword length < 5 or error
+    if(formState.password.length < 5) {
+      console.log('here', formState.password.length)
+      setError('Password length must be greater than 5');
+      return;
+  }
     const mutationResponse = await addUser({
       variables: {
         email: formState.email, password: formState.password,
